@@ -19,7 +19,8 @@ from importlib import resources
 from pathlib import Path
 from typing import Any
 
-DEFAULT_DB_PATH = Path.home() / ".g0-shared-layer" / "layer.sqlite"
+def default_db_path() -> Path:
+    return Path.home() / ".g0-shared-layer" / "layer.sqlite"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS claims (
@@ -128,7 +129,7 @@ def new_id(prefix: str) -> str:
 
 
 def db_path_from_env() -> str:
-    return os.environ.get("G0_DB_PATH") or str(DEFAULT_DB_PATH)
+    return os.environ.get("G0_DB_PATH") or str(default_db_path())
 
 
 def load_seed(name: str) -> dict[str, Any]:
