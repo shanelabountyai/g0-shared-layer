@@ -14,18 +14,18 @@ Status: `todo` · `doing` · `done` · `blocked`.
 | # | Task | Done when | Status |
 |---|---|---|---|
 | C0 | Decisions and backlog. `docs/DECISIONS.md` carries the owner's ten decisions plus the run's own; this file splits the run. | Both files committed before any code. | done |
-| C1 | Contracts. `contracts/<capability>/v1.json` for the six capabilities and `health`: the advertised input and output schema, `version` in both. `tests/contracts/` pins a golden copy and checks the live models generate the same schema. | `pytest tests/contracts` passes; editing a model field without bumping the version fails it (AC 3). | todo |
-| C2 | Storage and seeds. SQLite schema (`claims`, `brand_policies`, `brand_rules`, `contacts`, `consent`, `events`, `run_log`, `health_log`, `rubrics`, `evaluations`), seed loader, seeds: claims from the evidence brief's safe rows, brand policy v1 from G1's `brand_voice`, ~20 synthetic contacts, three rubrics. | Fresh db seeds idempotently; counts match the seed files; no `example.com`-free email anywhere in `contacts`. | todo |
-| C3 | `claims.registry`: text or claims list → supported / unsupported / needs_source with source. Unit test on the seeded registry. | Known stat is supported with its source; wrong number is unsupported; unknown topic needs a source. | todo |
-| C4 | `brand.policy`: text + channel → pass/fail with violations (rule id, excerpt, fix). Unit test. | Every never-use phrase, emoji, and a 26-word post angle are caught; clean text passes. | todo |
-| C5 | `audience.consent`: contact id or email + channel → allowed / blocked + reason. Unit test. | Fixture flags are honoured; unknown contact and `do_not_contact` are blocked. | todo |
-| C6 | `measurement`: event + fields → stored event id. Unit test. | Row round-trips; id is unique; fields stored as JSON. | todo |
-| C7 | `observability`: run id, agent, step, tokens, cost, status → logged, with run total and cap flag. Unit test. | Total accumulates per run; `over_cap` flips past $10. | todo |
-| C8 | `evaluation`: rubric id + item → scores, pass/fail, notes; pluggable judge, deterministic fallback, fixture. Unit test. | Deterministic judge scores the three rubrics; fixture judge replays; Claude judge refuses without a key and past the cap. | todo |
-| C9 | `health` tool + uptime log. Unit test. | Reports db, seeds, contract versions; writes a `health_log` row. | todo |
-| C10 | MCP server over stdio exposing the seven tools, errors as typed results; end-to-end test that starts the server as a subprocess and calls every tool through an MCP client. | `pytest tests/e2e` passes; `tools/list` shows seven tools with input and output schemas equal to the contracts (AC 1). | todo |
-| C11 | Docs: `README.md` for a reviewer; `docs/attach.md` with the G1 before/after counts (AC 5); `NEXT.md` with the owner's hand steps (G0·B n8n build, G1·C start, judge confirmation). | Reviewer can run the tests and the server from the README alone. | todo |
-| C12 | Push `kickoff`; open one PR against `main`; do not merge. | PR open with test counts, stubs, cost and hand steps. | todo |
+| C1 | Contracts. `contracts/<capability>/v1.json` for the six capabilities and `health`: the advertised input and output schema, `version` in both. `tests/contracts/` pins a golden copy and checks the live models generate the same schema. | `pytest tests/contracts` passes; editing a model field without bumping the version fails it (AC 3). | done |
+| C2 | Storage and seeds. SQLite schema (`claims`, `brand_policies`, `brand_rules`, `contacts`, `consent`, `events`, `run_log`, `health_log`, `rubrics`, `evaluations`), seed loader, seeds: claims from the evidence brief's safe rows, brand policy v1 from G1's `brand_voice`, ~20 synthetic contacts, three rubrics. | Fresh db seeds idempotently; counts match the seed files; no `example.com`-free email anywhere in `contacts`. | done |
+| C3 | `claims.registry`: text or claims list → supported / unsupported / needs_source with source. Unit test on the seeded registry. | Known stat is supported with its source; wrong number is unsupported; unknown topic needs a source. | done |
+| C4 | `brand.policy`: text + channel → pass/fail with violations (rule id, excerpt, fix). Unit test. | Every never-use phrase, emoji, and a 26-word post angle are caught; clean text passes. | done |
+| C5 | `audience.consent`: contact id or email + channel → allowed / blocked + reason. Unit test. | Fixture flags are honoured; unknown contact and `do_not_contact` are blocked. | done |
+| C6 | `measurement`: event + fields → stored event id. Unit test. | Row round-trips; id is unique; fields stored as JSON. | done |
+| C7 | `observability`: run id, agent, step, tokens, cost, status → logged, with run total and cap flag. Unit test. | Total accumulates per run; `over_cap` flips past $10. | done |
+| C8 | `evaluation`: rubric id + item → scores, pass/fail, notes; pluggable judge, deterministic fallback, fixture. Unit test. | Deterministic judge scores the three rubrics; fixture judge replays; Claude judge refuses without a key and past the cap. | done |
+| C9 | `health` tool + uptime log. Unit test. | Reports db, seeds, contract versions; writes a `health_log` row. | done |
+| C10 | MCP server over stdio exposing the seven tools, errors as typed results; end-to-end test that starts the server as a subprocess and calls every tool through an MCP client. | `pytest tests/e2e` passes; `tools/list` shows seven tools with input and output schemas equal to the contracts (AC 1). | done |
+| C11 | Docs: `README.md` for a reviewer; `docs/attach.md` with the G1 before/after counts (AC 5); `NEXT.md` with the owner's hand steps (G0·B n8n build, G1·C start, judge confirmation). | Reviewer can run the tests and the server from the README alone. | done |
+| C12 | Push `kickoff`; open one PR against `main`; do not merge. | PR open with test counts, stubs, cost and hand steps. | done |
 
 ## Later runs
 
