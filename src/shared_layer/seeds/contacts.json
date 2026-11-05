@@ -1,0 +1,325 @@
+{
+  "_about": "Synthetic contacts for audience.consent (D-9). Every person, company and address here is invented; all emails are on example.com (RFC 2606 reserved). Per-channel consent flags are demo data. No real contact data may be added to this repo.",
+  "contacts": [
+    {
+      "contact_id": "ct-001",
+      "email": "ada.test01@example.com",
+      "name": "Ada Testperson",
+      "title": "Director, Martech",
+      "company": "Sample Co",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": true,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-002",
+      "email": "ben.test02@example.com",
+      "name": "Ben Testperson",
+      "title": "Marketing Ops Manager",
+      "company": "Placeholder Inc",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": false,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-003",
+      "email": "cleo.test03@example.com",
+      "name": "Cleo Testperson",
+      "title": "Head of Demand Gen",
+      "company": "Testdata Ltd",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-004",
+      "email": "dev.test04@example.com",
+      "name": "Dev Testperson",
+      "title": "CMO",
+      "company": "Fixture Labs",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-005",
+      "email": "esme.test05@example.com",
+      "name": "Esme Testperson",
+      "title": "Creative Ops Lead",
+      "company": "Synthetic Systems",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": false,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-006",
+      "email": "finn.test06@example.com",
+      "name": "Finn Testperson",
+      "title": "Revenue Ops Director",
+      "company": "Dummy Dynamics",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": false,
+        "sms": true,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-007",
+      "email": "gia.test07@example.com",
+      "name": "Gia Testperson",
+      "title": "Campaign Manager",
+      "company": "Mock Industries",
+      "do_not_contact": true,
+      "consent": {
+        "email": false,
+        "linkedin": false,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-008",
+      "email": "hal.test08@example.com",
+      "name": "Hal Testperson",
+      "title": "Marketing PMO Lead",
+      "company": "Demo Holdings",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": false,
+        "sms": true,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-009",
+      "email": "ivy.test09@example.com",
+      "name": "Ivy Testperson",
+      "title": "Content Ops Manager",
+      "company": "Nonesuch Partners",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-010",
+      "email": "jun.test10@example.com",
+      "name": "Jun Testperson",
+      "title": "VP Marketing Operations",
+      "company": "Example Corp",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": false,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-011",
+      "email": "kai.test11@example.com",
+      "name": "Kai Testperson",
+      "title": "Director, Martech",
+      "company": "Sample Co",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-012",
+      "email": "lou.test12@example.com",
+      "name": "Lou Testperson",
+      "title": "Marketing Ops Manager",
+      "company": "Placeholder Inc",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": false,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-013",
+      "email": "mae.test13@example.com",
+      "name": "Mae Testperson",
+      "title": "Head of Demand Gen",
+      "company": "Testdata Ltd",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": true,
+        "sms": false,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-014",
+      "email": "nia.test14@example.com",
+      "name": "Nia Testperson",
+      "title": "CMO",
+      "company": "Fixture Labs",
+      "do_not_contact": true,
+      "consent": {
+        "email": false,
+        "linkedin": false,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-015",
+      "email": "oak.test15@example.com",
+      "name": "Oak Testperson",
+      "title": "Creative Ops Lead",
+      "company": "Synthetic Systems",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": false,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-016",
+      "email": "pia.test16@example.com",
+      "name": "Pia Testperson",
+      "title": "Revenue Ops Director",
+      "company": "Dummy Dynamics",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": false,
+        "sms": true,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-017",
+      "email": "quin.test17@example.com",
+      "name": "Quin Testperson",
+      "title": "Campaign Manager",
+      "company": "Mock Industries",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": false,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-018",
+      "email": "rex.test18@example.com",
+      "name": "Rex Testperson",
+      "title": "Marketing PMO Lead",
+      "company": "Demo Holdings",
+      "do_not_contact": false,
+      "consent": {
+        "email": false,
+        "linkedin": true,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-019",
+      "email": "sol.test19@example.com",
+      "name": "Sol Testperson",
+      "title": "Content Ops Manager",
+      "company": "Nonesuch Partners",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": false,
+        "sms": true,
+        "phone": false
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    },
+    {
+      "contact_id": "ct-020",
+      "email": "tam.test20@example.com",
+      "name": "Tam Testperson",
+      "title": "VP Marketing Operations",
+      "company": "Example Corp",
+      "do_not_contact": false,
+      "consent": {
+        "email": true,
+        "linkedin": true,
+        "sms": true,
+        "phone": true
+      },
+      "consent_recorded_at": "2026-11-05T00:00:00Z",
+      "source": "synthetic fixture (D-9)"
+    }
+  ]
+}

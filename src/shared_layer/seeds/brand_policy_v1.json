@@ -1,0 +1,21 @@
+{
+  "_about": "Brand policy seed v1 (D-7, D-16). `text` is the `brand_voice` rule verbatim from g1-signal-scout docs/duplication-log.md (n8n/prompts.py SHARED['brand_voice'], branch kickoff, 2026-11-05). `rules` are the parts of it a rule engine can enforce exactly; the judgment parts (no hype, no pitch, specific over general, defensible from the item) are criteria of the `post_angle_v1` rubric in evaluation. A later policy version from the owner's personal-brand skill is a new file, never an edit of this one.",
+  "policy_version": "1",
+  "source": "g1-signal-scout/docs/duplication-log.md brand_voice (carried by Editor, Writer)",
+  "text": "BRAND VOICE (for post angles). The reader is Shane LaBounty: a senior marketing-operations leader who ran $100M+ marketing budgets, 1,000+ projects a year and a 150-marketer martech stack, and now tests AI against that world and reports what held and what broke. Experience first, experiment second. Specific over general: one real number or moment beats polished generalities. Warm, direct, first person, contractions fine. Never hype, never beginner voice ('I'm learning AI'), never a pitch. Never use: 'excited to share', 'humbled', 'game-changer', 'hope this finds you well', 'pick your brain', 'synergy', 'circle back', emoji. A post angle is one sentence, at most 25 words, that a CMO who has never met Shane would read and think 'that person has done the work'. It must be defensible from the item alone.",
+  "channels": ["linkedin", "email", "digest", "post_angle", "other"],
+  "rules": [
+    {"id": "never_use.excited_to_share", "kind": "phrase", "pattern": "excited to share", "channels": ["*"], "severity": "fail", "fix": "Cut the opener; start with the moment or the number."},
+    {"id": "never_use.humbled", "kind": "phrase", "pattern": "humbled", "channels": ["*"], "severity": "fail", "fix": "Say what happened instead of how it felt."},
+    {"id": "never_use.game_changer", "kind": "phrase", "pattern": "game-changer", "channels": ["*"], "severity": "fail", "fix": "Name the specific change and its size."},
+    {"id": "never_use.game_changer_space", "kind": "phrase", "pattern": "game changer", "channels": ["*"], "severity": "fail", "fix": "Name the specific change and its size."},
+    {"id": "never_use.hope_this_finds_you_well", "kind": "phrase", "pattern": "hope this finds you well", "channels": ["*"], "severity": "fail", "fix": "Drop the pleasantry; open with the point."},
+    {"id": "never_use.pick_your_brain", "kind": "phrase", "pattern": "pick your brain", "channels": ["*"], "severity": "fail", "fix": "Ask the specific question you have."},
+    {"id": "never_use.synergy", "kind": "phrase", "pattern": "synergy", "channels": ["*"], "severity": "fail", "fix": "Say what the two things do together, concretely."},
+    {"id": "never_use.circle_back", "kind": "phrase", "pattern": "circle back", "channels": ["*"], "severity": "fail", "fix": "Say when and about what you will follow up."},
+    {"id": "never_use.emoji", "kind": "regex", "pattern": "[\\U0001F300-\\U0001FAFF\\U00002600-\\U000027BF\\U0001F900-\\U0001F9FF\\U0001F600-\\U0001F64F\\U0001F680-\\U0001F6FF]", "channels": ["*"], "severity": "fail", "fix": "Remove the emoji."},
+    {"id": "beginner_voice.im_learning_ai", "kind": "regex", "pattern": "\\bi[’']?m learning ai\\b", "channels": ["*"], "severity": "fail", "fix": "Lead with what you ran, then what you tested."},
+    {"id": "post_angle.one_sentence", "kind": "max_sentences", "limit": 1, "channels": ["post_angle"], "severity": "fail", "fix": "A post angle is one sentence."},
+    {"id": "post_angle.max_25_words", "kind": "max_words", "limit": 25, "channels": ["post_angle"], "severity": "fail", "fix": "Cut to 25 words or fewer."}
+  ]
+}

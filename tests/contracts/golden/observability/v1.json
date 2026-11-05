@@ -1,0 +1,280 @@
+{
+  "capability": "observability",
+  "tool": "observability",
+  "version": "1",
+  "description": "Log one step of a run: `run_id`, `agent`, `step`, tokens in/out, `cost_usd`, `status` (ok|error|skipped), optional `model`, `duration_ms`, `note`. Returns the log id and the run's running total (calls, tokens, cost) against the cap, with `over_cap`. Logging is never refused; when `over_cap` is true the caller should stop making model calls. Append-only.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "run_id": {
+        "minLength": 1,
+        "title": "Run Id",
+        "type": "string"
+      },
+      "agent": {
+        "minLength": 1,
+        "title": "Agent",
+        "type": "string"
+      },
+      "step": {
+        "minLength": 1,
+        "title": "Step",
+        "type": "string"
+      },
+      "model": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Model"
+      },
+      "input_tokens": {
+        "default": 0,
+        "minimum": 0,
+        "title": "Input Tokens",
+        "type": "integer"
+      },
+      "output_tokens": {
+        "default": 0,
+        "minimum": 0,
+        "title": "Output Tokens",
+        "type": "integer"
+      },
+      "cost_usd": {
+        "default": 0.0,
+        "minimum": 0,
+        "title": "Cost Usd",
+        "type": "number"
+      },
+      "status": {
+        "default": "ok",
+        "enum": [
+          "ok",
+          "error",
+          "skipped"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "duration_ms": {
+        "anyOf": [
+          {
+            "minimum": 0,
+            "type": "integer"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Duration Ms"
+      },
+      "note": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Note"
+      }
+    },
+    "required": [
+      "run_id",
+      "agent",
+      "step"
+    ],
+    "title": "observabilityArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "RunTotal": {
+        "additionalProperties": false,
+        "properties": {
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          },
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "input_tokens": {
+            "title": "Input Tokens",
+            "type": "integer"
+          },
+          "output_tokens": {
+            "title": "Output Tokens",
+            "type": "integer"
+          },
+          "cost_usd": {
+            "title": "Cost Usd",
+            "type": "number"
+          }
+        },
+        "required": [
+          "run_id",
+          "calls",
+          "input_tokens",
+          "output_tokens",
+          "cost_usd"
+        ],
+        "title": "RunTotal",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "observability",
+        "default": "observability",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "log_id": {
+        "default": "",
+        "title": "Log Id",
+        "type": "string"
+      },
+      "logged_at": {
+        "default": "",
+        "title": "Logged At",
+        "type": "string"
+      },
+      "run_total": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/RunTotal"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "cap_usd": {
+        "default": 10.0,
+        "title": "Cap Usd",
+        "type": "number"
+      },
+      "over_cap": {
+        "default": false,
+        "title": "Over Cap",
+        "type": "boolean"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}

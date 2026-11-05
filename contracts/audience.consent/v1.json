@@ -1,0 +1,215 @@
+{
+  "capability": "audience.consent",
+  "tool": "audience_consent",
+  "version": "1",
+  "description": "Ask whether a contact may be reached on a channel. Give `contact_id` or `email` plus `channel`. Returns `allowed` with a reason. Fails closed: an unknown contact, an unknown channel or a do-not-contact flag is `allowed: false`. Never returns the contact's details beyond the id.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "contact_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Contact Id"
+      },
+      "email": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Matched case-insensitively.",
+        "title": "Email"
+      },
+      "channel": {
+        "enum": [
+          "email",
+          "linkedin",
+          "sms",
+          "phone"
+        ],
+        "title": "Channel",
+        "type": "string"
+      }
+    },
+    "required": [
+      "channel"
+    ],
+    "title": "audience_consentArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "audience.consent",
+        "default": "audience.consent",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "allowed": {
+        "default": false,
+        "title": "Allowed",
+        "type": "boolean"
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "enum": [
+              "consented",
+              "not_consented",
+              "do_not_contact",
+              "unknown_contact",
+              "no_flag_for_channel"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Reason"
+      },
+      "contact_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "The matched contact's id, or null when unknown.",
+        "title": "Contact Id"
+      },
+      "channel": {
+        "default": "",
+        "title": "Channel",
+        "type": "string"
+      },
+      "checked_at": {
+        "default": "",
+        "title": "Checked At",
+        "type": "string"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}
