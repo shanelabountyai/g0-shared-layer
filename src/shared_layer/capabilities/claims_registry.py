@@ -89,7 +89,7 @@ def _rows(db: Database) -> list[dict]:
     for r in db.conn.execute("SELECT * FROM claims ORDER BY id"):
         d = dict(r)
         d["key_phrases"] = json.loads(d["key_phrases"])
-        d["numbers"] = normalized_numbers(d["stat"])
+        d["numbers"] = normalized_numbers(d["stat"]) | normalized_numbers(d["sample"])
         d["topics"] = topic_words(d["stat"]) | topic_words(d["title"])
         rows.append(d)
     return rows
