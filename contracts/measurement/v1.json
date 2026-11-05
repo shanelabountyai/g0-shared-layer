@@ -1,0 +1,200 @@
+{
+  "capability": "measurement",
+  "tool": "measurement",
+  "version": "1",
+  "description": "Store one measurement event: `event` (a dotted name such as `digest.published`) and `fields` (any JSON object). Optional `occurred_at` (ISO 8601; defaults to now), `run_id`, `agent`. Returns the stored `event_id`. Append-only: nothing is updated or deleted. Do not put personal data in `fields`.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "event": {
+        "description": "Dotted lower-case event name.",
+        "maxLength": 120,
+        "minLength": 1,
+        "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)*$",
+        "title": "Event",
+        "type": "string"
+      },
+      "fields": {
+        "additionalProperties": true,
+        "default": {},
+        "description": "Event payload; stored as JSON.",
+        "title": "Fields",
+        "type": "object"
+      },
+      "occurred_at": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "ISO 8601 timestamp; defaults to now (UTC).",
+        "title": "Occurred At"
+      },
+      "run_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Run Id"
+      },
+      "agent": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Agent"
+      }
+    },
+    "required": [
+      "event"
+    ],
+    "title": "measurementArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "measurement",
+        "default": "measurement",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "event_id": {
+        "default": "",
+        "title": "Event Id",
+        "type": "string"
+      },
+      "event": {
+        "default": "",
+        "title": "Event",
+        "type": "string"
+      },
+      "stored_at": {
+        "default": "",
+        "title": "Stored At",
+        "type": "string"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}

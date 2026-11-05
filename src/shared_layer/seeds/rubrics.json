@@ -1,0 +1,41 @@
+{
+  "_about": "Evaluation rubrics v1 (D-19). Each criterion has an id, a weight, a plain-words description a model judge reads, and a `check` the deterministic judge runs. `pass_threshold` is the minimum weighted score (0-1) to pass; a criterion marked `required` must score 1 for a pass regardless of the total. Criteria come from G1's shared rules (claim_rule, brand_voice) so the judge and the rule engine agree on what good looks like.",
+  "rubrics": [
+    {
+      "id": "post_angle_v1",
+      "title": "Post angle in Shane's brand voice",
+      "source": "g1 brand_voice rule",
+      "pass_threshold": 0.8,
+      "criteria": [
+        {"id": "one_sentence", "weight": 1, "required": true, "description": "Exactly one sentence.", "check": "max_sentences:1"},
+        {"id": "max_25_words", "weight": 1, "required": true, "description": "At most 25 words.", "check": "max_words:25"},
+        {"id": "no_banned_phrases", "weight": 1, "required": true, "description": "None of the never-use phrases, no emoji, no beginner voice.", "check": "brand_policy:post_angle"},
+        {"id": "specific", "weight": 1, "required": false, "description": "Specific over general: names one real number, decision or moment rather than a generality.", "check": "has_number_or_proper_noun"},
+        {"id": "no_hype", "weight": 1, "required": false, "description": "No hype words, no pitch, no beginner voice; reads like someone who has done the work.", "check": "no_hype_words"}
+      ]
+    },
+    {
+      "id": "claim_rule_v1",
+      "title": "Claim rule: nothing stated that the source item does not contain",
+      "source": "g1 claim_rule",
+      "pass_threshold": 1.0,
+      "criteria": [
+        {"id": "numbers_in_source", "weight": 1, "required": true, "description": "Every number in the item appears in the context (the source item).", "check": "numbers_subset_of_context"},
+        {"id": "urls_in_source", "weight": 1, "required": true, "description": "Every URL in the item appears verbatim in the context.", "check": "urls_subset_of_context"},
+        {"id": "no_invented_quotes", "weight": 1, "required": true, "description": "Every quoted passage in the item appears in the context.", "check": "quotes_subset_of_context"}
+      ]
+    },
+    {
+      "id": "digest_item_v1",
+      "title": "Digest item: summary plus tag plus angle",
+      "source": "g1 Summarizer and Editor contracts",
+      "pass_threshold": 0.75,
+      "criteria": [
+        {"id": "two_sentence_summary", "weight": 1, "required": false, "description": "The summary is two sentences.", "check": "field_sentences:summary:2"},
+        {"id": "valid_tag", "weight": 1, "required": true, "description": "The tag is one of marketing-ops-ai, agent-readiness, other.", "check": "field_in:tag:marketing-ops-ai,agent-readiness,other"},
+        {"id": "angle_present", "weight": 1, "required": true, "description": "A post_angle is present and non-empty.", "check": "field_nonempty:post_angle"},
+        {"id": "angle_in_voice", "weight": 1, "required": false, "description": "The post_angle passes the brand policy on channel post_angle.", "check": "field_brand_policy:post_angle:post_angle"}
+      ]
+    }
+  ]
+}

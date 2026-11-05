@@ -1,0 +1,265 @@
+{
+  "capability": "claims.registry",
+  "tool": "claims_registry",
+  "version": "1",
+  "description": "Check claims against the shared claims registry (the verified stats every agent may use). Give `text` (quantitative sentences are extracted) or a `claims` list. Each claim comes back `supported` with its source, `unsupported` (contradicts a registry stat), or `needs_source` (the registry says nothing about it). Use before publishing any number. Does not search the web; a `needs_source` claim needs a human or a new registry row, not a retry.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "description": "Contract version.",
+        "title": "Version",
+        "type": "string"
+      },
+      "text": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Free text; sentences carrying a number are checked as claims.",
+        "title": "Text"
+      },
+      "claims": {
+        "anyOf": [
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "description": "Claims to check one by one.",
+        "title": "Claims"
+      }
+    },
+    "title": "claims_registryArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "ClaimResult": {
+        "additionalProperties": false,
+        "properties": {
+          "claim": {
+            "title": "Claim",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "supported",
+              "unsupported",
+              "needs_source"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "matched_on": {
+            "enum": [
+              "number",
+              "phrase",
+              "topic",
+              "none"
+            ],
+            "title": "Matched On",
+            "type": "string"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Source"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "The matching registry row; for `unsupported`, the row the claim contradicts."
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim",
+          "status",
+          "matched_on",
+          "note"
+        ],
+        "title": "ClaimResult",
+        "type": "object"
+      },
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "Source": {
+        "additionalProperties": false,
+        "properties": {
+          "registry_id": {
+            "title": "Registry Id",
+            "type": "string"
+          },
+          "publisher": {
+            "title": "Publisher",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "sample": {
+            "description": "Sample size and date, as the registry records them.",
+            "title": "Sample",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          },
+          "stat": {
+            "description": "The registry's wording of the stat.",
+            "title": "Stat",
+            "type": "string"
+          }
+        },
+        "required": [
+          "registry_id",
+          "publisher",
+          "title",
+          "sample",
+          "url",
+          "stat"
+        ],
+        "title": "Source",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "claims.registry",
+        "default": "claims.registry",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "results": {
+        "items": {
+          "$ref": "#/$defs/ClaimResult"
+        },
+        "title": "Results",
+        "type": "array"
+      },
+      "registry_size": {
+        "default": 0,
+        "title": "Registry Size",
+        "type": "integer"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}

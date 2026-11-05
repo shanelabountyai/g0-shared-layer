@@ -1,0 +1,86 @@
+{
+  "_about": "Claims registry seed v1 (D-8). Only the rows under 'Verified stats — safe to use' in li-lead-gen-tools/docs/research/stalled-pilot-evidence-brief.md (2026-11-03), with their sources. Nothing from the 'use with caution' or 'do not use' sections is here. `stat` is the brief's wording; `key_phrases` are short strings a claim may contain that identify the stat without a number.",
+  "claims": [
+    {
+      "id": "mckinsey-2025-adoption-ebit",
+      "stat": "88% of orgs use AI in at least one function; only 39% report any EBIT impact, and most of those say under 5% of EBIT",
+      "publisher": "McKinsey",
+      "title": "The state of AI in 2025",
+      "sample": "1,993 respondents, 105 countries; Nov 2025",
+      "url": "https://www.mckinsey.com/our-insights/the-state-of-ai-2025",
+      "key_phrases": []
+    },
+    {
+      "id": "mckinsey-2025-high-performers-share",
+      "stat": "~6% are \"AI high performers\" (5%+ of EBIT from AI and significant value)",
+      "publisher": "McKinsey",
+      "title": "The state of AI in 2025",
+      "sample": "1,993 respondents, 105 countries; Nov 2025",
+      "url": "https://www.mckinsey.com/our-insights/the-state-of-ai-2025",
+      "key_phrases": ["ai high performers"]
+    },
+    {
+      "id": "mckinsey-2025-redesign-3x",
+      "stat": "High performers are nearly 3x as likely to fundamentally redesign workflows",
+      "publisher": "McKinsey",
+      "title": "The state of AI in 2025",
+      "sample": "1,993 respondents, 105 countries; Nov 2025",
+      "url": "https://www.mckinsey.com/our-insights/the-state-of-ai-2025",
+      "key_phrases": ["redesign workflows", "redesign the workflow"]
+    },
+    {
+      "id": "bcg-2025-value-gap",
+      "stat": "Only 5% of companies are \"future-built\" and get AI value at scale; 60% get minimal or no material value; 35% are scaling with limited results",
+      "publisher": "BCG",
+      "title": "The Widening AI Value Gap",
+      "sample": "1,250 companies; Sep 2025",
+      "url": "https://media-publications.bcg.com/The-Widening-AI-Value-Gap-October-2025.pdf",
+      "key_phrases": ["future-built"]
+    },
+    {
+      "id": "bcg-10-20-70",
+      "stat": "10-20-70: 10% of AI value from algorithms, 20% from data and tech, 70% from people and process",
+      "publisher": "BCG",
+      "title": "10-20-70 (restated on bcg.com, Jan 2026)",
+      "sample": "Heuristic, not a measured outcome",
+      "url": "https://www.bcg.com/news/26january2026-what-is-driving-ai-value",
+      "key_phrases": ["10-20-70", "people and process"]
+    },
+    {
+      "id": "sp-global-2025-abandonment",
+      "stat": "42% of companies abandoned most AI initiatives in 2025, up from 17% in 2024; the average org scrapped 46% of proofs of concept before production",
+      "publisher": "S&P Global Market Intelligence / 451 Research, via CIO Dive",
+      "title": "AI project failure data (S&P Global)",
+      "sample": "~1,000 respondents, North America + Europe; 2025",
+      "url": "https://www.ciodive.com/news/AI-project-fail-data-SPGlobal/742590/",
+      "key_phrases": ["abandoned most ai initiatives", "abandoned most of their ai initiatives"]
+    },
+    {
+      "id": "gartner-2024-genai-30pct",
+      "stat": "At least 30% of GenAI projects abandoned after proof of concept by end of 2025, due to poor data quality, inadequate risk controls, escalating costs or unclear business value",
+      "publisher": "Gartner",
+      "title": "Gartner predicts 30% of generative AI projects will be abandoned after proof of concept by end of 2025",
+      "sample": "Prediction; Jul 2024",
+      "url": "https://www.gartner.com/en/newsroom/press-releases/2024-07-29-gartner-predicts-30-percent-of-generative-ai-projects-will-be-abandoned-after-proof-of-concept-by-end-of-2025",
+      "key_phrases": ["genai projects abandoned after proof of concept"]
+    },
+    {
+      "id": "gartner-2025-agentic-40pct",
+      "stat": "Over 40% of agentic AI projects canceled by end of 2027 (costs, unclear value, inadequate risk controls); only ~130 of thousands of \"agentic\" vendors are real",
+      "publisher": "Gartner",
+      "title": "Over 40% of agentic AI projects will be scrapped by 2027 (Reuters via The Star)",
+      "sample": "Prediction; Jun 2025",
+      "url": "https://www.thestar.com.my/tech/tech-news/2025/06/25/over-40-of-agentic-ai-projects-will-be-scrapped-by-2027-gartner-says",
+      "key_phrases": ["agentic ai projects canceled", "agentic ai projects scrapped", "agent washing"]
+    },
+    {
+      "id": "rand-2024-root-causes",
+      "stat": "Five root causes: problem misunderstood or miscommunicated; not enough data; tech chosen over the user's problem; weak infrastructure; problem too hard for AI",
+      "publisher": "RAND (Ryseff et al.)",
+      "title": "Root Causes of Failure for AI Projects",
+      "sample": "65 interviews with practitioners; Aug 2024",
+      "url": "https://www.rand.org/pubs/research_reports/RRA2680-1.html",
+      "key_phrases": ["five root causes", "root causes of failure for ai projects"]
+    }
+  ]
+}

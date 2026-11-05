@@ -1,0 +1,193 @@
+{
+  "capability": "health",
+  "tool": "health",
+  "version": "1",
+  "description": "Report the layer's health: database path and writability, seed counts, contract versions, seeded rubric and policy ids, server version and uptime. Writes one row to the uptime log. Call first when a consumer starts, and when any other tool returns ok=false with code STORAGE_ERROR.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      }
+    },
+    "title": "healthArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "health",
+        "default": "health",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "status": {
+        "default": "ok",
+        "enum": [
+          "ok",
+          "degraded"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "server_version": {
+        "default": "",
+        "title": "Server Version",
+        "type": "string"
+      },
+      "db_path": {
+        "default": "",
+        "title": "Db Path",
+        "type": "string"
+      },
+      "db_writable": {
+        "default": false,
+        "title": "Db Writable",
+        "type": "boolean"
+      },
+      "seeds": {
+        "additionalProperties": {
+          "type": "integer"
+        },
+        "title": "Seeds",
+        "type": "object"
+      },
+      "contracts": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "description": "capability → contract version",
+        "title": "Contracts",
+        "type": "object"
+      },
+      "rubrics": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Rubrics",
+        "type": "array"
+      },
+      "policy_versions": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Policy Versions",
+        "type": "array"
+      },
+      "uptime_s": {
+        "default": 0.0,
+        "title": "Uptime S",
+        "type": "number"
+      },
+      "checked_at": {
+        "default": "",
+        "title": "Checked At",
+        "type": "string"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}
