@@ -32,6 +32,8 @@ G1 has four agents (Researcher, Summarizer, Editor, Writer). The log lists what 
 | Copies of the 8 shared rules | **24** (14 prompt + 10 code) | **8** (4 in G0, 4 single helpers in G1·C) |
 | Integrations (agents × capabilities each would carry itself) | **16** (4 agents × 4 capabilities G1 uses: claims, brand, evaluation, observability) | **8** (4 agents × 1 MCP connection + 4 capabilities built once) — or 10 counting all 6 capabilities in the layer |
 
+The integration figures are confirmed against G1's own `docs/duplication-log.md` (`g1-signal-scout` main, 5b970de, 2026-11-06): 16 before; 4 agent connections + 4 capabilities built once in G0 after, i.e. 8 (D-27). README's 18 → 9 is the PRD's 3-agents × 6-tools illustration, labelled as such.
+
 AC 5 (G1 half) is this table. The A2 half is produced by G0·M.
 
 ## Steps for G1·C (BACKLOG C1–C6 in `g1-signal-scout`)

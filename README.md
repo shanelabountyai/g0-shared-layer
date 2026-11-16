@@ -8,9 +8,9 @@ This README is written for someone deciding whether the engineering is sound. Th
 
 | An agent asks… | Tool | What is guaranteed |
 |---|---|---|
-| "Is '88% of orgs use AI' a number I may publish?" | `claims_registry` | Checked against the seeded registry (the evidence brief's **safe-to-use rows only**, each with publisher, sample, date and URL). `supported` comes with its source; a wrong number against a known stat is `unsupported` and names the row it contradicts; anything the registry cannot speak to is `needs_source`, never silently passed. No model call, no web search. |
+| "Is '88% of orgs use AI' a number I may publish?" | `claims_registry` | Checked against the seeded registry (the evidence brief's **safe-to-use rows only**, each with publisher, sample, date and URL). `supported` only when **every** statistic in the claim matches a registry stat for the same metric, and comes with its source; one wrong or unregistered number, or a number that belongs to a different figure of the row, is `unsupported` and names the row; sample sizes never support a claim; offer and price figures ("save 15%", "$499/mo") are not checked (D-23, D-24); anything the registry cannot speak to is `needs_source`, never silently passed. No model call, no web search. |
 | "Does this post angle break the brand voice?" | `brand_policy` | The G1 `brand_voice` rule, verbatim, is the policy text; the never-use list, emoji and beginner voice are enforced on every channel, the one-sentence/25-word limit on `post_angle`. Every violation carries the rule id, the excerpt and a fix. What a rule engine cannot judge (hype, pitch) is explicitly left to `evaluation`. |
-| "May I email this contact?" | `audience_consent` | Fails closed: unknown contact, unknown channel, missing flag or do-not-contact is `allowed: false` with a reason. Only synthetic contacts exist in this repo (20, all `@example.com`); the seed loader refuses anything else. The result never carries a name or an email. |
+| "May I email this contact?" | `audience_consent` | Fails closed: unknown contact, missing flag for the channel or do-not-contact is `allowed: false` with a reason. An unknown channel is rejected earlier, by the input schema (a protocol-level error, D-25). Only synthetic contacts exist in this repo (20, all `@example.com`); the seed loader refuses anything else. The result never carries a name or an email. |
 | "Record that the digest went out." | `measurement` | Append-only insert with a stored id. No schema per event; the event name is the contract. No personal data belongs in `fields`. |
 | "Score this item against the rubric." | `evaluation` | A pluggable judge. Deterministic by default (one check per criterion); a Claude judge when a key is present, with tokens and cost logged per call and refused past the cap; a fixture judge for tests. Pass/fail is decided in one place from required criteria and a threshold. |
 | "Log this model call; am I over budget?" | `observability` | G1's `run_logging` rule in one place: per-step tokens and cost, the run's running total, and `over_cap` against the $10 cap. Logging is never refused, so an overrun is visible, not hidden. |
@@ -78,17 +78,17 @@ Error codes: `INVALID_ARGUMENT`, `NOT_FOUND`, `UNKNOWN_RUBRIC`, `UNKNOWN_POLICY`
 
 ## How it is tested
 
-117 tests, all without network or a model call: `uv run pytest`.
+157 tests, all without network or a model call; GitHub Actions runs them on every push and pull request (`.github/workflows/ci.yml`, D-28): `uv run pytest`.
 
 - **`tests/contracts/`** (38) — three locks per capability: the published file equals the golden copy byte for byte; the live models generate exactly the published file; `version`/`ok`/`error` are present and a real call's result validates against the output schema. One test shows a shape edit without a bump is caught. **A breaking contract change fails here until the version is bumped** (AC 3).
-- **`tests/unit/`** (74) — storage and seeds (synthetic-only enforcement, the banned figures from the brief are absent, idempotence), and one file per capability. The evaluation tests drive the Claude judge with a fake Anthropic client: cost arithmetic, the run-log entry, the cap refusal with zero calls made, the no-key refusal.
-- **`tests/e2e/test_stdio.py`** (5) — the server as a **subprocess over stdio**, driven by the SDK's `Client`: `tools/list` equals `contracts/` on the wire, every tool answers, refusals arrive inside the output schema, a malformed argument is a protocol error, state persists in the file.
+- **`tests/unit/`** (113) — storage and seeds (synthetic-only enforcement, the banned figures from the brief are absent, idempotence), and one file per capability. The evaluation tests drive the Claude judge with a fake Anthropic client: cost arithmetic, the run-log entry, the cap refusal with zero calls made, the no-key refusal.
+- **`tests/e2e/test_stdio.py`** (6) — the server as a **subprocess over stdio**, driven by the SDK's `Client`: `tools/list` equals `contracts/` on the wire, every tool answers, refusals arrive inside the output schema, a malformed argument (including an unknown consent channel) is a protocol error, state persists in the file.
 
 ## Running it
 
 ```bash
 uv sync --all-groups --extra judge      # Python 3.12 venv, dev tools, optional Anthropic SDK
-uv run pytest                           # 117 tests, ~6 s, no network
+uv run pytest                           # 157 tests, ~9 s, no network
 uv run g0-shared-layer                  # the server over stdio (nothing on stdout but protocol)
 
 # Register with Claude Code / Claude Desktop
@@ -113,7 +113,7 @@ If you change a model and skip step 1, `test_live_models_generate_the_published_
 
 ## The single point of failure, and what mitigates it
 
-Three agents carrying six tools each is 18 integrations and 3 copies of the rules; with the layer it is 9 and 1 copy (G1's own count: `docs/attach.md`). The price is that everything now depends on one thing. What this build does about that:
+The PRD's illustration: three agents carrying six tools each is 18 integrations and 3 copies of the rules; with the layer it is 9 and 1 copy. G1's own count is 16 integrations before (4 agents × the 4 capabilities G1 uses) and 8 after (4 agent connections + 4 capabilities built once), from `g1-signal-scout/docs/duplication-log.md` (`docs/attach.md`, D-27). The price is that everything now depends on one thing. What this build does about that:
 
 - **Contract tests as change control.** No shape moves without a version and a golden file; every consumer pins a tag.
 - **Refusals the caller can act on.** Every failure is a typed result with `code`, `field` and `next`; a consumer never has to parse an exception string.

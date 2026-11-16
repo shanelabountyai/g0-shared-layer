@@ -2,6 +2,17 @@
 
 State (2026-11-05, end of the unattended G0·C run on Fable): **G0·C built on branch `kickoff`**, one PR open against `main`, unmerged. 117 tests pass (38 contract, 74 unit, 5 end-to-end over stdio); none skipped, none failing. **Cost of live model calls this run: $0.00** — no `ANTHROPIC_API_KEY` was present, so no call was made.
 
+## Review fixes (2026-11-16, cleanup run on PR #1)
+
+- **claims.registry (D-23, D-24):** every statistic in a claim must be backed by a registry stat for the same metric; a number that belongs to a different figure of the row is a contradiction; sample sizes never support a claim (registry numbers come from `stat` only); key phrases match on word boundaries; offer/price figures ("save 15%", "$499/mo") are not checked — an offer-only claim is `supported` with no source, and offer-only sentences are not extracted from `text`. Contract shape unchanged (v1); description wording updated (D-26). **Consumers will see stricter verdicts**: a claim that passed on one matching number now fails if any other number is wrong.
+- **Dependency:** `mcp-types` declared (server.py imports it directly); `uv.lock` updated.
+- **audience.consent (D-25):** docs now say an unknown channel fails input validation (protocol error), not `allowed: false`. Behaviour unchanged; tests pin it.
+- **Counts (D-27):** G1 integrations 16 → 8, confirmed against G1's duplication log; README's 18 → 9 is labelled as the PRD's illustration.
+- **CI (D-28):** `.github/workflows/ci.yml`, Python 3.12, `uv sync --frozen`, `uv run pytest`, on push and pull_request.
+- **brand.policy (D-29):** emoji rule catches ⭐, flags and a few other pictographs; never-use phrases match whole words.
+- Tests: 117 → 157 (38 contract, 113 unit, 6 e2e).
+- **n8n (G0·B) note:** the `claims.registry` Code node must implement D-23/D-24, not the old any-number rule.
+
 ## Done
 
 - Seven versioned contracts in `contracts/` with golden copies and three locks each (`tests/contracts/`).
@@ -25,7 +36,7 @@ State (2026-11-05, end of the unattended G0·C run on Fable): **G0·C built on b
 4. **G0·B — n8n, by hand, from the contracts.** One sub-workflow per capability (seven with `health`):
    - Workflows → new → **Execute Workflow Trigger**; set its input fields to `contracts/<capability>/v1.json → input.properties` (names and types), `version` included.
    - Data Tables: `claims`, `brand_rules`, `contacts`, `consent`, `events`, `run_log`, `health_log`; seed rows from `src/shared_layer/seeds/*.json` (contacts stay synthetic).
-   - Logic per capability: `claims.registry` = Code node with the number-normalize + topic-overlap rule from `claims_registry.py`; `brand.policy` = Code node looping the rules table; `audience.consent` = Data Table lookup with the fail-closed branches; `measurement`/`observability` = Data Table insert then a `SUM` for the run total; `evaluation` = Code node with the deterministic checks (model judge optional later); `health` = counts.
+   - Logic per capability: `claims.registry` = Code node with the all-numbers, same-metric rule from `claims_registry.py` (D-23, D-24: sample sizes and offer/price figures excluded); `brand.policy` = Code node looping the rules table; `audience.consent` = Data Table lookup with the fail-closed branches; `measurement`/`observability` = Data Table insert then a `SUM` for the run total; `evaluation` = Code node with the deterministic checks (model judge optional later); `health` = counts.
    - Return an object shaped like `output` with `version: "1"`, `ok`, `error` (null on success).
    - Acceptance: run each sub-workflow on the example inputs in `tests/contracts/test_contracts.py` and validate the result against the schema (the Code node can `require('ajv')` if allowed, or paste into any JSON Schema validator).
    - Re-point G1·B's prompts the same way `docs/attach.md` §Steps describes for G1·C, then count before/after.
