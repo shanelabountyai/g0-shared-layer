@@ -237,6 +237,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "mcp" },
+    { name = "mcp-types" },
     { name = "pydantic" },
 ]
 
@@ -257,6 +258,7 @@ dev = [
 requires-dist = [
     { name = "anthropic", marker = "extra == 'judge'", specifier = ">=0.60" },
     { name = "mcp", specifier = ">=2.3,<3" },
+    { name = "mcp-types", specifier = ">=2.3,<3" },
     { name = "pydantic", specifier = ">=2.11,<3" },
 ]
 provides-extras = ["judge"]
