@@ -1,0 +1,220 @@
+{
+  "capability": "brand.policy",
+  "tool": "brand_policy",
+  "version": "1",
+  "description": "Check text against the shared brand policy (never-use phrases, emoji, beginner voice; on channel `post_angle` also one sentence and at most 25 words). Returns pass/fail and every violation with the rule id, the excerpt that tripped it and a fix. Deterministic; it does not judge tone or hype — call `evaluation` with rubric `post_angle_v1` for that.",
+  "input": {
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "text": {
+        "description": "The text to check.",
+        "minLength": 1,
+        "title": "Text",
+        "type": "string"
+      },
+      "channel": {
+        "description": "Where the text will go; some rules apply to one channel only.",
+        "enum": [
+          "linkedin",
+          "email",
+          "digest",
+          "post_angle",
+          "other"
+        ],
+        "title": "Channel",
+        "type": "string"
+      },
+      "policy_version": {
+        "default": "1",
+        "description": "Which brand policy version to apply.",
+        "title": "Policy Version",
+        "type": "string"
+      }
+    },
+    "required": [
+      "text",
+      "channel"
+    ],
+    "title": "brand_policyArguments",
+    "type": "object"
+  },
+  "output": {
+    "$defs": {
+      "NextStep": {
+        "additionalProperties": false,
+        "description": "What to do next. Absent when the caller cannot fix it alone.",
+        "properties": {
+          "tool": {
+            "description": "Tool to call next.",
+            "title": "Tool",
+            "type": "string"
+          },
+          "why": {
+            "description": "What calling it will get you.",
+            "title": "Why",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "why"
+        ],
+        "title": "NextStep",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "description": "The envelope. `message` is plain words a model can show a human as-is.",
+        "properties": {
+          "code": {
+            "enum": [
+              "INVALID_ARGUMENT",
+              "NOT_FOUND",
+              "UNKNOWN_RUBRIC",
+              "UNKNOWN_POLICY",
+              "JUDGE_UNAVAILABLE",
+              "OVER_CAP",
+              "STORAGE_ERROR"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Which input argument to change, when one is.",
+            "title": "Field"
+          },
+          "next": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/NextStep"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      },
+      "Violation": {
+        "additionalProperties": false,
+        "properties": {
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "fail",
+              "warn"
+            ],
+            "title": "Severity",
+            "type": "string"
+          },
+          "excerpt": {
+            "description": "The text that tripped the rule.",
+            "title": "Excerpt",
+            "type": "string"
+          },
+          "fix": {
+            "title": "Fix",
+            "type": "string"
+          }
+        },
+        "required": [
+          "rule_id",
+          "severity",
+          "excerpt",
+          "fix"
+        ],
+        "title": "Violation",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "version": {
+        "const": "1",
+        "default": "1",
+        "title": "Version",
+        "type": "string"
+      },
+      "capability": {
+        "const": "brand.policy",
+        "default": "brand.policy",
+        "title": "Capability",
+        "type": "string"
+      },
+      "ok": {
+        "default": true,
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "policy_version": {
+        "default": "",
+        "title": "Policy Version",
+        "type": "string"
+      },
+      "channel": {
+        "default": "",
+        "title": "Channel",
+        "type": "string"
+      },
+      "passed": {
+        "default": false,
+        "description": "True when no `fail` violation was found.",
+        "title": "Passed",
+        "type": "boolean"
+      },
+      "violations": {
+        "items": {
+          "$ref": "#/$defs/Violation"
+        },
+        "title": "Violations",
+        "type": "array"
+      },
+      "rules_checked": {
+        "default": 0,
+        "title": "Rules Checked",
+        "type": "integer"
+      }
+    },
+    "title": "Output",
+    "type": "object"
+  }
+}

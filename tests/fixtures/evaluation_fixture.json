@@ -1,0 +1,35 @@
+{
+  "_about": "Replay fixture for evaluation's FixtureJudge (D-19). This is a HAND-WRITTEN SAMPLE in the Claude judge's output shape, written on 2026-11-05 with no API key present. It is NOT a recorded live model response. Replace it with a recorded response after the owner confirms the judge model and prices and runs one live call (NEXT.md).",
+  "results": {
+    "post_angle_v1": {
+      "scores": [
+        {"criterion": "one_sentence", "score": 1.0, "weight": 1, "required": true, "note": "One sentence."},
+        {"criterion": "max_25_words", "score": 1.0, "weight": 1, "required": true, "note": "Under the limit."},
+        {"criterion": "no_banned_phrases", "score": 1.0, "weight": 1, "required": true, "note": "No never-use phrase, emoji or beginner voice."},
+        {"criterion": "specific", "score": 1.0, "weight": 1, "required": false, "note": "Names a concrete number from the item."},
+        {"criterion": "no_hype", "score": 0.5, "weight": 1, "required": false, "note": "Reads slightly promotional in the closing clause."}
+      ],
+      "notes": "Sample judgment: passes on the required criteria; tone could be flatter.",
+      "usage": {"model": "claude-sonnet-5-5", "input_tokens": 640, "output_tokens": 210, "cost_usd": 0.00338}
+    },
+    "claim_rule_v1": {
+      "scores": [
+        {"criterion": "numbers_in_source", "score": 1.0, "weight": 1, "required": true, "note": "Every number appears in the source item."},
+        {"criterion": "urls_in_source", "score": 1.0, "weight": 1, "required": true, "note": "No URL outside the source."},
+        {"criterion": "no_invented_quotes", "score": 1.0, "weight": 1, "required": true, "note": "No quoted passage outside the source."}
+      ],
+      "notes": "Sample judgment: faithful to the source.",
+      "usage": {"model": "claude-sonnet-5-5", "input_tokens": 900, "output_tokens": 160, "cost_usd": 0.0034}
+    },
+    "digest_item_v1": {
+      "scores": [
+        {"criterion": "two_sentence_summary", "score": 1.0, "weight": 1, "required": false, "note": "Two sentences."},
+        {"criterion": "valid_tag", "score": 1.0, "weight": 1, "required": true, "note": "Tag is agent-readiness."},
+        {"criterion": "angle_present", "score": 1.0, "weight": 1, "required": true, "note": "Angle present."},
+        {"criterion": "angle_in_voice", "score": 0.0, "weight": 1, "required": false, "note": "Angle uses 'game-changer'."}
+      ],
+      "notes": "Sample judgment: structure is right; the angle breaks the never-use list.",
+      "usage": {"model": "claude-sonnet-5-5", "input_tokens": 720, "output_tokens": 190, "cost_usd": 0.00334}
+    }
+  }
+}
