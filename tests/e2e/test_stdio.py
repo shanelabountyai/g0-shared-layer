@@ -121,6 +121,14 @@ async def test_a_malformed_argument_is_a_protocol_error(tmp_path):
         assert "channel" in result.content[0].text
 
 
+async def test_unknown_consent_channel_is_a_protocol_error_not_allowed_false(tmp_path):
+    # D-25: `channel` is a closed enum; an unknown one never reaches the fail-closed lookup.
+    async with connect(tmp_path) as client:
+        result = await client.call_tool("audience_consent", {"contact_id": "ct-001", "channel": "fax"})
+        assert result.is_error
+        assert "channel" in result.content[0].text
+
+
 async def test_state_persists_across_calls_in_the_same_db(tmp_path):
     async with connect(tmp_path) as client:
         await call(client, "measurement", {"event": "a.b"})

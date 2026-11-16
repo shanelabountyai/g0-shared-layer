@@ -54,3 +54,11 @@ def test_output_never_carries_name_or_email(db):
     out = run(db, contact_id="ct-001", channel="email")
     dumped = out.model_dump_json()
     assert "Testperson" not in dumped and "@example.com" not in dumped
+
+
+def test_unknown_channel_fails_input_validation():
+    # D-25: rejected by the input schema, so it is never `allowed: false`.
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        cap.Input(contact_id="ct-001", channel="fax")
