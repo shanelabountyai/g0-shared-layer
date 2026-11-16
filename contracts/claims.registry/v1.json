@@ -2,7 +2,7 @@
   "capability": "claims.registry",
   "tool": "claims_registry",
   "version": "1",
-  "description": "Check claims against the shared claims registry (the verified stats every agent may use). Give `text` (quantitative sentences are extracted) or a `claims` list. Each claim comes back `supported` with its source, `unsupported` (contradicts a registry stat), or `needs_source` (the registry says nothing about it). Use before publishing any number. Does not search the web; a `needs_source` claim needs a human or a new registry row, not a retry.",
+  "description": "Check claims against the shared claims registry (the verified stats every agent may use). Give `text` (sentences carrying a statistic are extracted) or a `claims` list. Each claim comes back `supported` with its source only when EVERY statistic in it matches a registry stat for the same metric; `unsupported` when any number contradicts or is missing from a registry row the claim speaks to; `needs_source` when the registry says nothing about it. Sample sizes are not statistics. Offer and price figures (\"save 15%\", \"$499/mo\") are not checked: an offer-only claim is `supported` with no source. Use before publishing any number. Does not search the web; a `needs_source` claim needs a human or a new registry row, not a retry.",
   "input": {
     "properties": {
       "version": {
@@ -22,7 +22,7 @@
           }
         ],
         "default": null,
-        "description": "Free text; sentences carrying a number are checked as claims.",
+        "description": "Free text; sentences carrying a number other than an offer/price figure are checked as claims.",
         "title": "Text"
       },
       "claims": {
@@ -83,7 +83,7 @@
               }
             ],
             "default": null,
-            "description": "The matching registry row; for `unsupported`, the row the claim contradicts."
+            "description": "The matching registry row; for `unsupported`, the row the claim contradicts or speaks to. Null for `needs_source` and for an offer-only claim."
           },
           "note": {
             "title": "Note",

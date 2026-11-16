@@ -36,8 +36,15 @@ def word_count(text: str) -> int:
 def normalized_numbers(text: str) -> set[str]:
     """Numbers as the registry compares them: `88%`, `88 percent` → `88%`;
     `1,993` → `1993`; `$100M` → `$100m`; `3x` → `3x`; `~6%` → `6%`; `5%+` → `5%`.
-    Years (1900–2099) are dropped: they are dates, not statistics."""
-    out: set[str] = set()
+    Years (1900–2099, written without a thousands comma) are dropped: they are
+    dates, not statistics; `1,993` is a count, not a year."""
+    return {n for n, _, _ in number_spans(text)}
+
+
+def number_spans(text: str) -> list[tuple[str, int, int]]:
+    """Every number occurrence as `(normalized, start, end)`, in order, with the
+    same normalization and year rule as `normalized_numbers`."""
+    out: list[tuple[str, int, int]] = []
     for m in _NUMBER.finditer(text):
         num = m.group("num").replace(",", "")
         suffix = (m.group("suffix") or "").lower()
@@ -46,14 +53,14 @@ def normalized_numbers(text: str) -> set[str]:
         if suffix == "+":
             suffix = ""
         prefix = "$" if m.group("prefix") == "$" else ""
-        if not prefix and not suffix and num.isdigit() and 1900 <= int(num) <= 2099:
+        if not prefix and not suffix and "," not in m.group("num") and num.isdigit() and 1900 <= int(num) <= 2099:
             continue
         try:
             value = float(num)
         except ValueError:
             continue
         canonical = f"{int(value)}" if value.is_integer() else f"{value:g}"
-        out.add(f"{prefix}{canonical}{suffix}")
+        out.append((f"{prefix}{canonical}{suffix}", m.start(), m.end()))
     return out
 
 
