@@ -85,7 +85,8 @@ def apply_rules(text: str, channel: str, rules: list[dict]) -> list[Violation]:
             continue
         kind = r["kind"]
         if kind == "phrase":
-            for m in re.finditer(re.escape(r["pattern"]), text, re.IGNORECASE):
+            # Whole words only (D-29): "humbled" must not fire inside "unhumbled".
+            for m in re.finditer(r"(?<![\w])" + re.escape(r["pattern"]) + r"(?![\w])", text, re.IGNORECASE):
                 violations.append(Violation(rule_id=r["id"], severity=r["severity"], excerpt=_excerpt(text, m.start(), m.end()), fix=r["fix"]))
         elif kind == "regex":
             for m in re.finditer(r["pattern"], text, re.IGNORECASE):

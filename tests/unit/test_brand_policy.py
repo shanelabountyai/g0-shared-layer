@@ -64,3 +64,24 @@ def test_seeded_policy_text_is_the_g1_rule_verbatim(db):
 def test_excerpt_shows_context_around_the_hit(db):
     out = run(db, text="Let us circle back on the Workfront rollout next quarter.", channel="email")
     assert "circle back" in out.violations[0].excerpt and "Workfront" in out.violations[0].excerpt
+
+
+@pytest.mark.parametrize("emoji", ["⭐", "\U0001F1FA\U0001F1F8", "\U0001F680", "✅", "⏰", "\U0001F19A"])
+def test_star_flag_and_other_emoji_are_caught(db, emoji):
+    out = run(db, text=f"Shipped the intake rebuild {emoji}", channel="email")
+    assert not out.passed and {v.rule_id for v in out.violations} == {"never_use.emoji"}
+
+
+def test_plain_symbols_are_not_emoji(db):
+    out = run(db, text="Budget: $100M+ -> 3x, 42% (n=1,250) & more; see section 2.", channel="email")
+    assert out.passed, out.violations
+
+
+@pytest.mark.parametrize("text", ["The unhumbled founder spoke.", "Synergyx is a vendor name.", "We moved the circle backward."])
+def test_never_use_phrases_match_whole_words_only(db, text):
+    assert run(db, text=text, channel="linkedin").passed
+
+
+def test_never_use_phrase_still_caught_next_to_punctuation(db):
+    out = run(db, text="Total game-changer, honestly. (Synergy!)", channel="linkedin")
+    assert {v.rule_id for v in out.violations} == {"never_use.game_changer", "never_use.synergy"}
