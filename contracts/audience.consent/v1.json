@@ -2,7 +2,7 @@
   "capability": "audience.consent",
   "tool": "audience_consent",
   "version": "1",
-  "description": "Ask whether a contact may be reached on a channel. Give `contact_id` or `email` plus `channel`. Returns `allowed` with a reason. Fails closed: an unknown contact, an unknown channel or a do-not-contact flag is `allowed: false`. Never returns the contact's details beyond the id.",
+  "description": "Ask whether a contact may be reached on a channel. Give `contact_id` or `email` plus `channel`. Returns `allowed` with a reason. Fails closed: an unknown contact, a contact with no flag for the channel, or a do-not-contact flag is `allowed: false`. `channel` must be one of email|linkedin|sms|phone; any other value is rejected as invalid input before the check runs. Never returns the contact's details beyond the id.",
   "input": {
     "properties": {
       "version": {

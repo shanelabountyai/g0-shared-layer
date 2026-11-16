@@ -1,6 +1,9 @@
-"""audience.consent v1 — may this contact be reached on this channel? (D-9, D-17)
+"""audience.consent v1 — may this contact be reached on this channel? (D-9, D-17, D-25)
 
-A lookup that fails closed. Contacts are synthetic (example.com) in this repo.
+A lookup that fails closed: unknown contact, no flag for the channel, or
+do-not-contact is `allowed: false`. An unknown channel never reaches this code:
+`channel` is a closed enum, so the input schema rejects it (a protocol-level
+error, D-14/D-25). Contacts are synthetic (example.com) in this repo.
 """
 
 from __future__ import annotations
@@ -17,8 +20,10 @@ TOOL = "audience_consent"
 VERSION = "1"
 DESCRIPTION = (
     "Ask whether a contact may be reached on a channel. Give `contact_id` or `email` plus `channel`. "
-    "Returns `allowed` with a reason. Fails closed: an unknown contact, an unknown channel or a "
-    "do-not-contact flag is `allowed: false`. Never returns the contact's details beyond the id."
+    "Returns `allowed` with a reason. Fails closed: an unknown contact, a contact with no flag for the "
+    "channel, or a do-not-contact flag is `allowed: false`. `channel` must be one of email|linkedin|sms|phone; "
+    "any other value is rejected as invalid input before the check runs. Never returns the contact's "
+    "details beyond the id."
 )
 
 Channel = Literal["email", "linkedin", "sms", "phone"]
